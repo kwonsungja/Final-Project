@@ -31,7 +31,7 @@ if "shuffled_nouns" not in st.session_state:
     st.session_state["score"] = 0
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
-    st.session_state["user_name"] = ""  # Add user name to session state
+    st.session_state["user_name"] = ""
     st.session_state["user_s"] = ""
     st.session_state["user_es"] = ""
     st.session_state["current_ies"] = ""
@@ -91,15 +91,14 @@ with col1:
         st.session_state["user_s"] = ""
         st.session_state["user_es"] = ""
         st.session_state["current_ies"] = ""
-        st.experimental_rerun()  # Safely rerun the app
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to end!)"):
         st.session_state["final_stage"] = True
-        st.experimental_rerun()  # Safely rerun the app
 
 # Final Message after Game Ends
-if "final_stage" in st.session_state and st.session_state["final_stage"]:
+if st.session_state["final_stage"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
