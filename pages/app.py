@@ -44,14 +44,6 @@ if user_name:
     st.session_state["user_name"] = user_name
     st.write(f"### Welcome, **{user_name}**! Let's get started 🎉")
 
-# Instructions
-st.markdown("""
-## Instructions:
-1. Select any singular noun from the shuffled list.
-2. Type its plural form.
-3. Check your answer to see feedback and score.
-""")
-
 # Step 1: Select a Noun
 st.subheader("Step 1: Select a Singular Noun")
 selected_noun = st.selectbox("Choose a noun to start:", st.session_state["shuffled_nouns"])
