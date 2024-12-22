@@ -68,10 +68,16 @@ st.title("NounSmart: Practice Regular Plural Nouns")
 
 # Step 0: User Name Input
 st.subheader("👤 Enter Your Name")
-if st.session_state["restart"]:  # Ensure the user_name field is cleared after a restart
-    user_name = st.text_input("Your Name:", value="", placeholder="Type your name here")
-else:
-    user_name = st.text_input("Your Name:", value=st.session_state["user_name"], placeholder="Type your name here")
+
+# Ensure user_name starts empty on restart
+if "restart_triggered" not in st.session_state:
+    st.session_state["restart_triggered"] = False
+
+if st.session_state["restart_triggered"]:
+    st.session_state["user_name"] = ""  # Clear name after restart
+    st.session_state["restart_triggered"] = False
+
+user_name = st.text_input("Your Name:", value=st.session_state["user_name"], placeholder="Type your name here")
 
 if user_name:
     st.session_state["user_name"] = user_name
@@ -129,6 +135,7 @@ with col2:
 
 with col3:
     if st.button("다시 시작하려면 여기를 클릭하세요! (Click here to restart!)"):
+        st.session_state["restart_triggered"] = True  # Set restart triggered flag
         st.session_state["restart"] = True  # Trigger restart
 
 # Final Feedback
@@ -140,6 +147,7 @@ if st.session_state["finished"]:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
