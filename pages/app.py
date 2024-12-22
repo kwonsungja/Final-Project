@@ -14,20 +14,26 @@ def load_data():
 
 df = load_data()
 
-# Initialize session state
+# Ensure all keys in `st.session_state` are initialized
 if "shuffled_nouns" not in st.session_state:
-    all_nouns = df["singular"].unique().tolist()
-    random.shuffle(all_nouns)
-    st.session_state["shuffled_nouns"] = all_nouns  # List of all nouns
-    st.session_state["answered_nouns"] = set()  # Track answered nouns
-    st.session_state["current_noun"] = ""  # Current noun
-    st.session_state["score"] = 0  # User's score
-    st.session_state["trials"] = 0  # Number of attempts
-    st.session_state["feedback"] = ""  # Feedback message
-    st.session_state["user_name"] = ""  # User's name
-    st.session_state["restart"] = False  # Restart flag
+    st.session_state["shuffled_nouns"] = df["singular"].unique().tolist()
+    random.shuffle(st.session_state["shuffled_nouns"])
+if "answered_nouns" not in st.session_state:
+    st.session_state["answered_nouns"] = set()
+if "current_noun" not in st.session_state:
+    st.session_state["current_noun"] = ""
+if "score" not in st.session_state:
+    st.session_state["score"] = 0
+if "trials" not in st.session_state:
+    st.session_state["trials"] = 0
+if "feedback" not in st.session_state:
+    st.session_state["feedback"] = ""
+if "user_name" not in st.session_state:
+    st.session_state["user_name"] = ""
+if "restart" not in st.session_state:
+    st.session_state["restart"] = False
 
-# Reset state if restarting
+# Handle restart logic
 if st.session_state["restart"]:
     st.session_state["shuffled_nouns"] = df["singular"].unique().tolist()
     random.shuffle(st.session_state["shuffled_nouns"])
@@ -114,6 +120,7 @@ with col2:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
