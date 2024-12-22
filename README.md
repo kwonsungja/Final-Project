@@ -34,4 +34,11 @@ Click the link above to start practicing!
 * User-Friendly Interface: Designed for beginners with a simple and intuitive layout.
 ## Motivation
 This app aims to make learning English more engaging and accessible for students. Through interactive exercises, learners can build confidence and foster a deeper interest in the English language.
-### Note: The app link https://kwon24.streamlit.app/ has been verified and is currently active.
+
+### App Link and QR Code
+
+Access the app using the link below or scan the QR code to get started!
+
+- **App Link**: [Final-Project: APP Learning Plan](https://kwon24.streamlit.app/) has been verified and is currently active.
+
+![QR Code for the App](https://raw.githubusercontent.com/yourusername/yourrepository/main/path-to-qr-code.png)
