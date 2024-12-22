@@ -91,6 +91,8 @@ with col1:
         st.session_state["user_s"] = ""
         st.session_state["user_es"] = ""
         st.session_state["current_ies"] = ""
+        st.session_state["score"] = 0  # Reset the score
+        st.session_state["trials"] = 0  # Reset the trials
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to end!)"):
@@ -100,5 +102,4 @@ with col2:
 if st.session_state["final_stage"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
-
 
