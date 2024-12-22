@@ -32,6 +32,8 @@ if "user_name" not in st.session_state:
     st.session_state["user_name"] = ""
 if "restart" not in st.session_state:
     st.session_state["restart"] = False
+if "finished" not in st.session_state:
+    st.session_state["finished"] = False  # Add a finished state
 
 # Handle restart logic
 if st.session_state["restart"]:
@@ -43,6 +45,7 @@ if st.session_state["restart"]:
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
     st.session_state["restart"] = False
+    st.session_state["finished"] = False
 
 # Pluralization logic
 def pluralize(noun):
@@ -106,20 +109,30 @@ if st.button("Check Answer") and st.session_state["current_noun"]:
     st.success(st.session_state["feedback"])
     st.write(f"### {st.session_state['user_name']} Your Score: {st.session_state['score']} / {st.session_state['trials']}")
 
-# Continue and Restart Options
-col1, col2 = st.columns(2)
+# Continue, Finish, and Restart Options
+col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
         st.session_state["current_noun"] = ""  # Clear the current noun
 
 with col2:
+    if st.button("종료하려면 여기를 클릭하세요! (Click here to finish!)"):
+        st.session_state["finished"] = True  # Mark as finished
+
+with col3:
     if st.button("다시 시작하려면 여기를 클릭하세요! (Click here to restart!)"):
         st.session_state["restart"] = True  # Trigger restart
 
 # Final Feedback
+if st.session_state["finished"]:
+    st.markdown("### 🎉 Thank you for playing!")
+    st.markdown(f"### Final Score: {st.session_state['score']} / {st.session_state['trials']}")
+    st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
