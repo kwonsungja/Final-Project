@@ -23,7 +23,7 @@ try:
     response.raise_for_status()  # Ensure the request was successful
     image = Image.open(BytesIO(response.content)).convert("RGB")  # Ensure the image is processed as RGB
     st.image(image, caption="A friendly teacher welcoming you!")
-    st.markdown("➰ URL: final project app")
+    st.markdown("➰ URL: kwon24 app")
     st.markdown("➰ Since Dec. 22, 2024.")
 
 except requests.exceptions.RequestException as e:
