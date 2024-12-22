@@ -23,6 +23,9 @@ try:
     response.raise_for_status()  # Ensure the request was successful
     image = Image.open(BytesIO(response.content))
     st.image(image, caption="A friendly teacher welcoming you!")
+    st.markdown("➰ URL: final project app")
+    st.markdown("➰ Since Dec. 22, 2024.")
+
 except requests.exceptions.RequestException as e:
     st.write(f"⚠️ Unable to load the image from the URL! Error: {e}")
 except Exception as e:
