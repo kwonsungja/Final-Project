@@ -41,4 +41,4 @@ Access the app using the link below or scan the QR code to get started!
 
 - **App Link**: [Final-Project: APP Learning Plan](https://kwon24.streamlit.app/) has been verified and is currently active.
 
-![QR Code for the App](https://raw.githubusercontent.com/yourusername/yourrepository/main/path-to-qr-code.png)
+![QR Code for the App]([(https://github.com/kwonsungja/Final-Project/blob/main/images/qr_nouns.png))
