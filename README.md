@@ -1,4 +1,4 @@
-# Final-Project: APP Learnig Plan
+# 🍇 Final-Project: APP Learnig Plan
 
 ## Overview
 This application is designed to assist middle and high school beginners in learning the basic rules for forming regular plural nouns in English.
@@ -35,7 +35,7 @@ Click the link above to start practicing!
 ## Motivation
 This app aims to make learning English more engaging and accessible for students. Through interactive exercises, learners can build confidence and foster a deeper interest in the English language.
 
-### App Link and QR Code
+### 🌱 App Link and QR Code
 
 Access the app using the link below or scan the QR code to get started!
 
