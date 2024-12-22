@@ -14,6 +14,15 @@ def load_data():
 
 df = load_data()
 
+# Reset session state for restart
+if "restart" not in st.session_state:
+    st.session_state["restart"] = False
+
+if st.session_state["restart"]:
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]  # Clear all session state variables
+    st.session_state["restart"] = False  # Reset restart flag
+
 # Ensure all keys in `st.session_state` are initialized
 if "shuffled_nouns" not in st.session_state:
     st.session_state["shuffled_nouns"] = df["singular"].unique().tolist()
@@ -29,23 +38,8 @@ if "trials" not in st.session_state:
 if "feedback" not in st.session_state:
     st.session_state["feedback"] = ""
 if "user_name" not in st.session_state:
-    st.session_state["user_name"] = ""  # Ensure the user name is initialized
-if "restart" not in st.session_state:
-    st.session_state["restart"] = False
+    st.session_state["user_name"] = ""
 if "finished" not in st.session_state:
-    st.session_state["finished"] = False  # Add a finished state
-
-# Handle restart logic
-if st.session_state["restart"]:
-    st.session_state["shuffled_nouns"] = df["singular"].unique().tolist()
-    random.shuffle(st.session_state["shuffled_nouns"])
-    st.session_state["answered_nouns"] = set()
-    st.session_state["current_noun"] = ""
-    st.session_state["score"] = 0
-    st.session_state["trials"] = 0
-    st.session_state["feedback"] = ""
-    st.session_state["user_name"] = ""  # Clear user name on restart
-    st.session_state["restart"] = False
     st.session_state["finished"] = False
 
 # Pluralization logic
@@ -56,27 +50,11 @@ def pluralize(noun):
         return noun[:-1] + 'ies'
     return noun + 's'
 
-# Encouragement messages
-final_encouragement = [
-    "Well done, {name}! Keep practicing to master plural nouns!",
-    "Great effort, {name}! You're making amazing progress!",
-    "Fantastic work, {name}! Stay motivated and keep learning!"
-]
-
 # App Layout
 st.title("NounSmart: Practice Regular Plural Nouns")
 
 # Step 0: User Name Input
 st.subheader("👤 Enter Your Name")
-
-# Ensure user_name starts empty on restart
-if "restart_triggered" not in st.session_state:
-    st.session_state["restart_triggered"] = False
-
-if st.session_state["restart_triggered"]:
-    st.session_state["user_name"] = ""  # Clear name after restart
-    st.session_state["restart_triggered"] = False
-
 user_name = st.text_input("Your Name:", value=st.session_state["user_name"], placeholder="Type your name here")
 
 if user_name:
@@ -135,7 +113,6 @@ with col2:
 
 with col3:
     if st.button("다시 시작하려면 여기를 클릭하세요! (Click here to restart!)"):
-        st.session_state["restart_triggered"] = True  # Set restart triggered flag
         st.session_state["restart"] = True  # Trigger restart
 
 # Final Feedback
@@ -147,6 +124,7 @@ if st.session_state["finished"]:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
