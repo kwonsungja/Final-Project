@@ -70,15 +70,14 @@ selected_noun = st.selectbox(
     "Choose a noun to start:",
     [""] + available_nouns,  # 빈 옵션 추가
     index=0,
-    key="selectbox_key",  # selectbox의 고유 키 추가
+    key="selectbox_key",
 )
 
 if selected_noun:
     # 새로운 명사를 선택하면 Step 2 입력란 초기화
     if st.session_state["current_noun"] != selected_noun:
         st.session_state["current_noun"] = selected_noun
-        st.session_state["user_input"] = ""  # 입력란 초기화
-        st.experimental_rerun()  # 강제로 UI 갱신
+        st.session_state["user_input"] = ""  # Step 2 입력란 초기화
 
     st.write(f"### Singular Noun: **{selected_noun}**")
 
@@ -86,8 +85,9 @@ if selected_noun:
 st.subheader("Step 2: Type the Plural Form")
 user_input = st.text_input(
     "Enter the plural form:",
-    value=st.session_state["user_input"],  # 항상 현재 상태 값을 사용
-    key="text_input_key",  # 고유 키 추가
+    value=st.session_state["user_input"],  # 항상 상태 값 기반
+    key="text_input_key",
+    placeholder="Type the plural form here",  # 명확한 초기화
 )
 
 # Step 3: 정답 확인
@@ -113,7 +113,7 @@ if st.button("Check Answer") and st.session_state["current_noun"]:
 col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
-        st.session_state["user_input"] = ""
+        st.session_state["user_input"] = ""  # Step 2 입력란 초기화
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to finish!)"):
@@ -130,6 +130,7 @@ if st.session_state["finished"]:
 
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
+
 
 
 
