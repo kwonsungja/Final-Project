@@ -39,6 +39,7 @@ This app aims to make learning English more engaging and accessible for students
 
 Access the app using the link below or scan the QR code to get started!
 
-- **App Link**: [Final-Project: APP Learning Plan](https://kwon24.streamlit.app/) has been verified and is currently active.
+- **App Link**: [Final-Project: APP Learning Plan](https://kwon24.streamlit.app/)
 
-![QR Code for the App]([(https://github.com/kwonsungja/Final-Project/blob/main/images/qr_nouns.png))
+![QR Code for the App](https://github.com/kwonsungja/Final-Project/blob/main/images/qr_nouns.png)
+
