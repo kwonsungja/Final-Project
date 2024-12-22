@@ -10,5 +10,3 @@ image_url = "https://github.com/kwonsungja/Final-Project/blob/main/images/englis
 st.image(image_url, caption="Your friendly mascot!", width=300)
 
 st.write("This cute character is here to cheer you on as you learn and grow! 🌟")
-st.markdown("➰ URL: final project app")
-st.markdown("➰ Since Dec. 17, 2024.")
