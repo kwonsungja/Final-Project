@@ -29,7 +29,7 @@ if "trials" not in st.session_state:
 if "feedback" not in st.session_state:
     st.session_state["feedback"] = ""
 if "user_name" not in st.session_state:
-    st.session_state["user_name"] = ""
+    st.session_state["user_name"] = ""  # Ensure the user name is initialized
 if "restart" not in st.session_state:
     st.session_state["restart"] = False
 if "finished" not in st.session_state:
@@ -44,7 +44,7 @@ if st.session_state["restart"]:
     st.session_state["score"] = 0
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
-    st.session_state["user_name"] = ""  # Clear user name
+    st.session_state["user_name"] = ""  # Clear user name on restart
     st.session_state["restart"] = False
     st.session_state["finished"] = False
 
@@ -137,6 +137,7 @@ if st.session_state["finished"]:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
