@@ -39,10 +39,10 @@ if "feedback" not in st.session_state:
     st.session_state["feedback"] = ""
 if "user_name" not in st.session_state:
     st.session_state["user_name"] = ""
-if "finished" not in st.session_state:
-    st.session_state["finished"] = False
 if "user_input" not in st.session_state:
     st.session_state["user_input"] = ""  # Initialize input field value
+if "finished" not in st.session_state:
+    st.session_state["finished"] = False
 
 # Pluralization logic
 def pluralize(noun):
@@ -84,11 +84,8 @@ if selected_noun:
 # Step 2: User Input
 st.subheader("Step 2: Type the Plural Form")
 user_input = st.text_input(
-    "Enter the plural form:", value=st.session_state["user_input"], on_change=lambda: None
+    "Enter the plural form:", value=st.session_state["user_input"], key="user_input_key"
 )
-
-if user_input:
-    st.session_state["user_input"] = user_input  # Update the session state value for input
 
 # Step 3: Check Answer
 if st.button("Check Answer") and st.session_state["current_noun"]:
@@ -115,6 +112,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
         st.session_state["current_noun"] = ""  # Clear the current noun
+        st.session_state["user_input"] = ""  # Clear the input field
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to finish!)"):
@@ -133,6 +131,7 @@ if st.session_state["finished"]:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
