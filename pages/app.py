@@ -14,6 +14,30 @@ def load_data():
 
 df = load_data()
 
+# Initialize session state
+if "shuffled_nouns" not in st.session_state:
+    all_nouns = df["singular"].unique().tolist()
+    random.shuffle(all_nouns)
+    st.session_state["shuffled_nouns"] = all_nouns  # List of all nouns
+    st.session_state["answered_nouns"] = set()  # Track answered nouns
+    st.session_state["current_noun"] = ""  # Current noun
+    st.session_state["score"] = 0  # User's score
+    st.session_state["trials"] = 0  # Number of attempts
+    st.session_state["feedback"] = ""  # Feedback message
+    st.session_state["user_name"] = ""  # User's name
+    st.session_state["restart"] = False  # Restart flag
+
+# Reset state if restarting
+if st.session_state["restart"]:
+    st.session_state["shuffled_nouns"] = df["singular"].unique().tolist()
+    random.shuffle(st.session_state["shuffled_nouns"])
+    st.session_state["answered_nouns"] = set()
+    st.session_state["current_noun"] = ""
+    st.session_state["score"] = 0
+    st.session_state["trials"] = 0
+    st.session_state["feedback"] = ""
+    st.session_state["restart"] = False
+
 # Pluralization logic
 def pluralize(noun):
     if noun.endswith(('s', 'ss', 'sh', 'ch', 'x', 'z')) or (noun.endswith('o') and noun[-2] not in 'aeiou'):
@@ -21,27 +45,6 @@ def pluralize(noun):
     elif noun.endswith('y') and not noun[-2] in 'aeiou':
         return noun[:-1] + 'ies'
     return noun + 's'
-
-# Initialize session state
-if "shuffled_nouns" not in st.session_state:
-    all_nouns = df["singular"].unique().tolist()
-    random.shuffle(all_nouns)
-    st.session_state["shuffled_nouns"] = all_nouns
-    st.session_state["current_noun"] = ""
-    st.session_state["score"] = 0
-    st.session_state["trials"] = 0
-    st.session_state["feedback"] = ""
-    st.session_state["user_name"] = ""
-    st.session_state["restart"] = False  # Restart 플래그
-    st.session_state["answered_nouns"] = set()  # 이미 시도한 명사 저장
-
-# Reset if restart is triggered
-if st.session_state["restart"]:
-    st.session_state["score"] = 0
-    st.session_state["trials"] = 0
-    st.session_state["feedback"] = ""
-    st.session_state["answered_nouns"] = set()  # 초기화
-    st.session_state["restart"] = False
 
 # Encouragement messages
 final_encouragement = [
@@ -64,11 +67,11 @@ if user_name:
 # Step 1: Select a Noun
 st.subheader("Step 1: Select a Singular Noun")
 available_nouns = [noun for noun in st.session_state["shuffled_nouns"] if noun not in st.session_state["answered_nouns"]]
+
 if not available_nouns:
     st.write("🎉 You've completed all the nouns! Restart to practice again.")
 else:
     selected_noun = st.selectbox("Choose a noun to start:", available_nouns)
-
     if selected_noun:
         st.session_state["current_noun"] = selected_noun
         st.write(f"### Singular Noun: **{selected_noun}**")
@@ -90,7 +93,6 @@ if st.button("Check Answer") and st.session_state["current_noun"]:
             st.session_state["feedback"] = f"✅ Correct! The plural form of '{st.session_state['current_noun']}' is '{correct_plural}'."
         else:
             st.session_state["feedback"] = f"❌ Incorrect. The correct plural form of '{st.session_state['current_noun']}' is '{correct_plural}'."
-
     else:
         st.session_state["feedback"] = "⚠️ You've already answered this noun! Please select another one."
 
@@ -112,6 +114,7 @@ with col2:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
