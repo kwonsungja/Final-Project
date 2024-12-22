@@ -44,6 +44,7 @@ if st.session_state["restart"]:
     st.session_state["score"] = 0
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
+    st.session_state["user_name"] = ""  # Clear user name
     st.session_state["restart"] = False
     st.session_state["finished"] = False
 
@@ -80,7 +81,11 @@ available_nouns = [noun for noun in st.session_state["shuffled_nouns"] if noun n
 if not available_nouns:
     st.write("🎉 You've completed all the nouns! Restart to practice again.")
 else:
-    selected_noun = st.selectbox("Choose a noun to start:", available_nouns)
+    selected_noun = st.selectbox(
+        "Choose a noun to start:",
+        [""] + available_nouns,  # Add an empty option as the first choice
+        index=0,
+    )
     if selected_noun:
         st.session_state["current_noun"] = selected_noun
         st.write(f"### Singular Noun: **{selected_noun}**")
@@ -132,6 +137,7 @@ if st.session_state["finished"]:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
