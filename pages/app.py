@@ -68,7 +68,10 @@ st.title("NounSmart: Practice Regular Plural Nouns")
 
 # Step 0: User Name Input
 st.subheader("👤 Enter Your Name")
-user_name = st.text_input("Your Name:", value=st.session_state["user_name"], placeholder="Type your name here")
+if st.session_state["restart"]:  # Ensure the user_name field is cleared after a restart
+    user_name = st.text_input("Your Name:", value="", placeholder="Type your name here")
+else:
+    user_name = st.text_input("Your Name:", value=st.session_state["user_name"], placeholder="Type your name here")
 
 if user_name:
     st.session_state["user_name"] = user_name
@@ -137,6 +140,7 @@ if st.session_state["finished"]:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
