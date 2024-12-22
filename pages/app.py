@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import random
 
-# Load the CSV file
+# CSV 파일 로드
 csv_url = "https://raw.githubusercontent.com/kwonsungja/Final-Project/main/regular_Nouns_real.csv"
 
 @st.cache_data
@@ -14,16 +14,16 @@ def load_data():
 
 df = load_data()
 
-# Reset session state for restart
+# 초기화 상태 관리
 if "restart" not in st.session_state:
     st.session_state["restart"] = False
 
 if st.session_state["restart"]:
-    # Explicitly clear all relevant session state variables
+    # 모든 상태 초기화
     st.session_state.clear()
-    st.session_state["restart"] = False  # Reset restart flag
+    st.session_state["restart"] = False
 
-# Ensure all keys in `st.session_state` are initialized
+# 상태 변수 초기화
 if "shuffled_nouns" not in st.session_state:
     st.session_state["shuffled_nouns"] = df["singular"].unique().tolist()
     random.shuffle(st.session_state["shuffled_nouns"])
@@ -40,11 +40,11 @@ if "feedback" not in st.session_state:
 if "user_name" not in st.session_state:
     st.session_state["user_name"] = ""
 if "user_input" not in st.session_state:
-    st.session_state["user_input"] = ""  # Initialize input field value
+    st.session_state["user_input"] = ""  # Step 2의 입력란 초기화
 if "finished" not in st.session_state:
     st.session_state["finished"] = False
 
-# Pluralization logic
+# 복수형 변환 함수
 def pluralize(noun):
     if noun.endswith(('s', 'ss', 'sh', 'ch', 'x', 'z')) or (noun.endswith('o') and noun[-2] not in 'aeiou'):
         return noun + 'es'
@@ -52,10 +52,10 @@ def pluralize(noun):
         return noun[:-1] + 'ies'
     return noun + 's'
 
-# App Layout
+# 앱 레이아웃
 st.title("NounSmart: Practice Regular Plural Nouns")
 
-# Step 0: User Name Input
+# Step 0: 사용자 이름 입력
 st.subheader("👤 Enter Your Name")
 user_name = st.text_input("Your Name:", value="", placeholder="Type your name here")
 
@@ -63,37 +63,38 @@ if user_name:
     st.session_state["user_name"] = user_name
     st.write(f"### Welcome, **{user_name}**! Let's get started 🎉")
 
-# Step 1: Select a Noun
+# Step 1: 명사 선택
 st.subheader("Step 1: Select a Singular Noun")
 available_nouns = [noun for noun in st.session_state["shuffled_nouns"] if noun not in st.session_state["answered_nouns"]]
 
 selected_noun = st.selectbox(
     "Choose a noun to start:",
-    [""] + available_nouns,  # Add an empty option as the first choice
+    [""] + available_nouns,  # 빈 옵션 추가
     index=0,
 )
 
 if selected_noun:
-    # Reset the input field in Step 2 when a new noun is selected
+    # 새 명사를 선택하면 Step 2 입력란 초기화
     if st.session_state["current_noun"] != selected_noun:
         st.session_state["current_noun"] = selected_noun
-        st.session_state["user_input"] = ""  # Reset the input field value
-
+        st.session_state["user_input"] = ""  # 입력란 초기화
     st.write(f"### Singular Noun: **{selected_noun}**")
 
-# Step 2: User Input
+# Step 2: 복수형 입력
 st.subheader("Step 2: Type the Plural Form")
 user_input = st.text_input(
-    "Enter the plural form:", value=st.session_state["user_input"], key="user_input_key"
+    "Enter the plural form:",
+    value=st.session_state["user_input"],
+    key="user_input_key",
 )
 
-# Step 3: Check Answer
+# Step 3: 정답 확인
 if st.button("Check Answer") and st.session_state["current_noun"]:
     correct_plural = pluralize(st.session_state["current_noun"])
 
     if st.session_state["current_noun"] not in st.session_state["answered_nouns"]:
         st.session_state["trials"] += 1
-        st.session_state["answered_nouns"].add(st.session_state["current_noun"])  # Mark noun as answered
+        st.session_state["answered_nouns"].add(st.session_state["current_noun"])  # 답변된 명사 추가
 
         if user_input.strip().lower() == correct_plural.lower():
             st.session_state["score"] += 1
@@ -103,34 +104,32 @@ if st.button("Check Answer") and st.session_state["current_noun"]:
     else:
         st.session_state["feedback"] = "⚠️ You've already answered this noun! Please select another one."
 
-    # Display feedback
+    # 피드백 표시
     st.success(st.session_state["feedback"])
     st.write(f"### {st.session_state['user_name']} Your Score: {st.session_state['score']} / {st.session_state['trials']}")
 
-# Continue, Finish, and Restart Options
+# 계속하기, 종료 및 재시작 버튼
 col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
-        st.session_state["current_noun"] = ""  # Clear the current noun
-        st.session_state["user_input"] = ""  # Clear the input field
+        st.session_state["user_input"] = ""  # Step 2 입력란 초기화
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to finish!)"):
-        st.session_state["finished"] = True  # Mark as finished
+        st.session_state["finished"] = True  # 종료 상태로 설정
 
 with col3:
     if st.button("다시 시작하려면 여기를 클릭하세요! (Click here to restart!)"):
-        st.session_state["restart"] = True  # Trigger restart
+        st.session_state["restart"] = True  # 재시작 트리거 설정
 
-# Final Feedback
+# 최종 피드백
 if st.session_state["finished"]:
     st.markdown("### 🎉 Thank you for playing!")
     st.markdown(f"### Final Score: {st.session_state['score']} / {st.session_state['trials']}")
-    st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
 
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
-    st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
