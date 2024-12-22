@@ -74,7 +74,7 @@ selected_noun = st.selectbox(
 )
 
 if selected_noun:
-    # 새 명사를 선택하면 Step 2 입력란 초기화
+    # 새로운 명사를 선택하면 Step 2 입력란 초기화
     if st.session_state["current_noun"] != selected_noun:
         st.session_state["current_noun"] = selected_noun
         st.session_state["user_input"] = ""  # 입력란 초기화
@@ -130,6 +130,7 @@ if st.session_state["finished"]:
 
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
+
 
 
 
