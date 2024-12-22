@@ -15,7 +15,7 @@ It is the courage to continue that counts."**
 """)
 
 # Correct URL of the image
-image_url = "https://raw.githubusercontent.com/kwonsungja/KSJ24/main/images/snow.png"
+image_url = "https://github.com/kwonsungja/Final-Project/blob/main/images/snow.png"
 
 # Load and display the image from the URL
 try:
