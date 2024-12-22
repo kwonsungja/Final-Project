@@ -32,10 +32,16 @@ if "shuffled_nouns" not in st.session_state:
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
     st.session_state["user_name"] = ""
-    st.session_state["user_s"] = ""
-    st.session_state["user_es"] = ""
-    st.session_state["current_ies"] = ""
     st.session_state["final_stage"] = False
+    st.session_state["restart"] = False  # Track if the user restarted
+
+# Check if the user restarted
+if st.session_state.get("restart", False):
+    # Reset score and trials when restarting
+    st.session_state["score"] = 0
+    st.session_state["trials"] = 0
+    st.session_state["feedback"] = ""
+    st.session_state["restart"] = False  # Reset the restart flag
 
 # Encouragement messages
 final_encouragement = [
@@ -88,11 +94,7 @@ with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
         # Reset necessary session state variables for the next round
         st.session_state["current_noun"] = ""
-        st.session_state["user_s"] = ""
-        st.session_state["user_es"] = ""
-        st.session_state["current_ies"] = ""
-        st.session_state["score"] = 0  # Reset the score
-        st.session_state["trials"] = 0  # Reset the trials
+        st.session_state["restart"] = True  # Trigger the restart flag
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to end!)"):
@@ -102,4 +104,5 @@ with col2:
 if st.session_state["final_stage"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
