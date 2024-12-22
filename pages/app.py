@@ -32,14 +32,15 @@ if "shuffled_nouns" not in st.session_state:
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
     st.session_state["user_name"] = ""
-    st.session_state["final_stage"] = False
-    st.session_state["restart"] = False  # Restart 상태 확인용 플래그
+    st.session_state["restart"] = False  # Restart 플래그
+    st.session_state["answered_nouns"] = set()  # 이미 시도한 명사 저장
 
-# Reset the app if the restart flag is True
+# Reset if restart is triggered
 if st.session_state["restart"]:
     st.session_state["score"] = 0
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
+    st.session_state["answered_nouns"] = set()  # 초기화
     st.session_state["restart"] = False
 
 # Encouragement messages
@@ -62,47 +63,56 @@ if user_name:
 
 # Step 1: Select a Noun
 st.subheader("Step 1: Select a Singular Noun")
-selected_noun = st.selectbox("Choose a noun to start:", st.session_state["shuffled_nouns"])
+available_nouns = [noun for noun in st.session_state["shuffled_nouns"] if noun not in st.session_state["answered_nouns"]]
+if not available_nouns:
+    st.write("🎉 You've completed all the nouns! Restart to practice again.")
+else:
+    selected_noun = st.selectbox("Choose a noun to start:", available_nouns)
 
-if selected_noun:
-    st.session_state["current_noun"] = selected_noun
-    st.write(f"### Singular Noun: **{selected_noun}**")
+    if selected_noun:
+        st.session_state["current_noun"] = selected_noun
+        st.write(f"### Singular Noun: **{selected_noun}**")
 
 # Step 2: User Input
 st.subheader("Step 2: Type the Plural Form")
 user_input = st.text_input("Enter the plural form:")
 
 # Step 3: Check Answer
-if st.button("Check Answer"):
+if st.button("Check Answer") and st.session_state["current_noun"]:
     correct_plural = pluralize(st.session_state["current_noun"])
-    st.session_state["trials"] += 1
 
-    if user_input.strip().lower() == correct_plural.lower():
-        st.session_state["score"] += 1
-        st.session_state["feedback"] = f"✅ Correct! The plural form of '{st.session_state['current_noun']}' is '{correct_plural}'."
+    if st.session_state["current_noun"] not in st.session_state["answered_nouns"]:
+        st.session_state["trials"] += 1
+        st.session_state["answered_nouns"].add(st.session_state["current_noun"])  # Mark noun as answered
+
+        if user_input.strip().lower() == correct_plural.lower():
+            st.session_state["score"] += 1
+            st.session_state["feedback"] = f"✅ Correct! The plural form of '{st.session_state['current_noun']}' is '{correct_plural}'."
+        else:
+            st.session_state["feedback"] = f"❌ Incorrect. The correct plural form of '{st.session_state['current_noun']}' is '{correct_plural}'."
+
     else:
-        st.session_state["feedback"] = f"❌ Incorrect. The correct plural form of '{st.session_state['current_noun']}' is '{correct_plural}'."
+        st.session_state["feedback"] = "⚠️ You've already answered this noun! Please select another one."
 
     # Display feedback
     st.success(st.session_state["feedback"])
     st.write(f"### {st.session_state['user_name']} Your Score: {st.session_state['score']} / {st.session_state['trials']}")
 
-# Continue and Finish Options
+# Continue and Restart Options
 col1, col2 = st.columns(2)
 with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
-        # Reset necessary session state variables for the next round
-        st.session_state["current_noun"] = ""
-        st.session_state["restart"] = True  # Restart 플래그 설정
+        st.session_state["current_noun"] = ""  # Clear the current noun
 
 with col2:
-    if st.button("종료하려면 여기를 클릭하세요! (Click here to end!)"):
-        st.session_state["final_stage"] = True
+    if st.button("다시 시작하려면 여기를 클릭하세요! (Click here to restart!)"):
+        st.session_state["restart"] = True  # Trigger restart
 
-# Final Message after Game Ends
-if st.session_state["final_stage"]:
+# Final Feedback
+if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
