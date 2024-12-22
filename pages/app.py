@@ -38,9 +38,11 @@ if "trials" not in st.session_state:
 if "feedback" not in st.session_state:
     st.session_state["feedback"] = ""
 if "user_name" not in st.session_state:
-    st.session_state["user_name"] = ""  # Ensure the user name starts empty
+    st.session_state["user_name"] = ""
 if "finished" not in st.session_state:
     st.session_state["finished"] = False
+if "user_input" not in st.session_state:
+    st.session_state["user_input"] = ""  # Initialize input field value
 
 # Pluralization logic
 def pluralize(noun):
@@ -65,21 +67,28 @@ if user_name:
 st.subheader("Step 1: Select a Singular Noun")
 available_nouns = [noun for noun in st.session_state["shuffled_nouns"] if noun not in st.session_state["answered_nouns"]]
 
-if not available_nouns:
-    st.write("🎉 You've completed all the nouns! Restart to practice again.")
-else:
-    selected_noun = st.selectbox(
-        "Choose a noun to start:",
-        [""] + available_nouns,  # Add an empty option as the first choice
-        index=0,
-    )
-    if selected_noun:
+selected_noun = st.selectbox(
+    "Choose a noun to start:",
+    [""] + available_nouns,  # Add an empty option as the first choice
+    index=0,
+)
+
+if selected_noun:
+    # Reset the input field in Step 2 when a new noun is selected
+    if st.session_state["current_noun"] != selected_noun:
         st.session_state["current_noun"] = selected_noun
-        st.write(f"### Singular Noun: **{selected_noun}**")
+        st.session_state["user_input"] = ""  # Reset the input field value
+
+    st.write(f"### Singular Noun: **{selected_noun}**")
 
 # Step 2: User Input
 st.subheader("Step 2: Type the Plural Form")
-user_input = st.text_input("Enter the plural form:")
+user_input = st.text_input(
+    "Enter the plural form:", value=st.session_state["user_input"], on_change=lambda: None
+)
+
+if user_input:
+    st.session_state["user_input"] = user_input  # Update the session state value for input
 
 # Step 3: Check Answer
 if st.button("Check Answer") and st.session_state["current_noun"]:
@@ -124,6 +133,7 @@ if st.session_state["finished"]:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
