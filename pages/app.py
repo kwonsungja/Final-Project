@@ -33,15 +33,14 @@ if "shuffled_nouns" not in st.session_state:
     st.session_state["feedback"] = ""
     st.session_state["user_name"] = ""
     st.session_state["final_stage"] = False
-    st.session_state["restart"] = False  # Track if the user restarted
+    st.session_state["restart"] = False  # Restart 상태 확인용 플래그
 
-# Check if the user restarted
-if st.session_state.get("restart", False):
-    # Reset score and trials when restarting
+# Reset the app if the restart flag is True
+if st.session_state["restart"]:
     st.session_state["score"] = 0
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
-    st.session_state["restart"] = False  # Reset the restart flag
+    st.session_state["restart"] = False
 
 # Encouragement messages
 final_encouragement = [
@@ -94,7 +93,7 @@ with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
         # Reset necessary session state variables for the next round
         st.session_state["current_noun"] = ""
-        st.session_state["restart"] = True  # Trigger the restart flag
+        st.session_state["restart"] = True  # Restart 플래그 설정
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to end!)"):
@@ -104,5 +103,6 @@ with col2:
 if st.session_state["final_stage"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
