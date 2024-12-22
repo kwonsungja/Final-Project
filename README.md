@@ -13,4 +13,4 @@ Process: 1. Select any singular noun from the shuffled list.
          3. Check your answer to see feedback and score.
          4. Practice twenty nouns and then choose the "Finish" button otherwise.
 
-![NounSmart_plural forms_QR](https://kwon24.streamlit.app/)
+!(https://kwon24.streamlit.app/)
