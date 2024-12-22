@@ -1,9 +1,9 @@
-import streamlit as st 
+import streamlit as st
 import pandas as pd
 import random
 
 # Load the CSV file
-csv_url = "https://github.com/kwonsungja/Final-Project/blob/main/regular_Nouns_real.csv"
+csv_url = "https://raw.githubusercontent.com/kwonsungja/Final-Project/main/regular_Nouns_real.csv"
 
 @st.cache_data
 def load_data():
@@ -16,7 +16,7 @@ df = load_data()
 
 # Pluralization logic
 def pluralize(noun):
-    if noun.endswith(('s', 'ss', 'sh', 'ch', 'x', 'z', 'o')):
+    if noun.endswith(('s', 'ss', 'sh', 'ch', 'x', 'z')) or (noun.endswith('o') and noun[-2] not in 'aeiou'):
         return noun + 'es'
     elif noun.endswith('y') and not noun[-2] in 'aeiou':
         return noun[:-1] + 'ies'
@@ -32,6 +32,17 @@ if "shuffled_nouns" not in st.session_state:
     st.session_state["trials"] = 0
     st.session_state["feedback"] = ""
     st.session_state["user_name"] = ""  # Add user name to session state
+    st.session_state["user_s"] = ""
+    st.session_state["user_es"] = ""
+    st.session_state["current_ies"] = ""
+    st.session_state["final_stage"] = False
+
+# Encouragement messages
+final_encouragement = [
+    "Well done, {name}! Keep practicing to master plural nouns!",
+    "Great effort, {name}! You're making amazing progress!",
+    "Fantastic work, {name}! Stay motivated and keep learning!"
+]
 
 # App Layout
 st.title("NounSmart: Practice Regular Plural Nouns")
@@ -71,27 +82,22 @@ if st.button("Check Answer"):
     st.success(st.session_state["feedback"])
     st.write(f"### {st.session_state['user_name']} Your Score: {st.session_state['score']} / {st.session_state['trials']}")
 
-# Final Report
-if st.button("Show Report"):
-    st.subheader("Final Report")
-    st.write(f"**{st.session_state['user_name']} Your Total Score:** {st.session_state['score']} correct out of {st.session_state['trials']} attempts.")
-    
-# 계속하기 및 끝내기
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("If you want to continue, Click here!"):
-                    # 다음 명사 준비
-                    st.session_state.user_s = ""
-                    st.session_state.user_es = ""
-                    st.session_state.current_ies = ""
-                    st.experimental_rerun()
+# Continue and Finish Options
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
+        # Prepare for the next noun
+        st.session_state["user_s"] = ""
+        st.session_state["user_es"] = ""
+        st.session_state["current_ies"] = ""
+        st.experimental_rerun()
 
-            with col2:
-                if st.button("If you want to end this app, Click here!"):
-                    st.session_state.final_stage = True
-                    st.experimental_rerun()
+with col2:
+    if st.button("종료하려면 여기를 클릭하세요! (Click here to end!)"):
+        st.session_state["final_stage"] = True
+        st.experimental_rerun()
 
-# 게임 종료 후 메시지
-if st.session_state.final_stage:
-    st.markdown("### THE END")
-    st.markdown(random.choice(final_encouragement).format(name=st.session_state.name))
+# Final Message after Game Ends
+if st.session_state["final_stage"]:
+    st.markdown("### 끝! (THE END)")
+    st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
