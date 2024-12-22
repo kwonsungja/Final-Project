@@ -1,16 +1,41 @@
 # Final-Project: APP Learnig Plan
 
-## Documentation
-Subject:  Middle, High school beginner
-Data introduction: There is difficulty finding nouns that end with -s, -ss, -sh, -ch, -x, -z, -o, or -y in middle, high school textbooks. Basic and simple 
-                   nouns are applied instead.
-Aims: To improve about basic rules for forming regular plural. First add -s to the singular noun, Second add -es to nouns ending in -s, -ss, -sh, -ch, -x, 
-      -z, or -o. Last if the -y is preceded by a consonant, change -y to -ies. Students sometimes may not know how to use -s, -es, or -ies after singular 
-      nouns. By learning these rules, they can resolve noun agreement issues and improve their understanding of nouns. Therefore, by utilizing this app, 
-      learners can be encouraged to participate, boosting their motivation and interest in learning English.
-Process: 1. Select any singular noun from the shuffled list.
-         2. Type its plural form.
-         3. Check your answer to see feedback and score.
-         4. Practice twenty nouns and then choose the "Finish" button otherwise.
+## Overview
+This application is designed to assist middle and high school beginners in learning the basic rules for forming regular plural nouns in English.
 
-!(https://kwon24.streamlit.app/)
+Documentation
+Subject
+Target Audience: Middle and high school beginner-level students.
+Data Introduction
+Identifying nouns that end with -s, -ss, -sh, -ch, -x, -z, -o, or -y in middle and high school textbooks can be challenging.
+To simplify learning, basic and simple nouns are applied instead.
+Aims
+Objective: To enhance understanding and application of the basic rules for forming regular plural nouns.
+Rules Covered:
+Add -s to the singular noun (e.g., cat → cats).
+Add -es to nouns ending in -s, -ss, -sh, -ch, -x, -z, or -o (e.g., box → boxes).
+For nouns ending in -y preceded by a consonant, change -y to -ies (e.g., baby → babies).
+Challenge: Students often struggle to determine whether to use -s, -es, or -ies after singular nouns.
+Outcome:
+By learning these rules, students can resolve noun agreement issues and improve their understanding of plural noun formation.
+The interactive nature of the app encourages participation, boosting motivation and interest in learning English.
+Process
+Select a Singular Noun: Choose any noun from the shuffled list.
+Type the Plural Form: Input the plural form of the selected noun.
+Check Your Answer: Receive feedback and view your score.
+Practice: After practicing with twenty nouns, click the "Finish" button to complete the session.
+Usage
+App Link
+Access the app here: Final-Project: APP Learning Plan
+
+Click the link above to start practicing!
+
+Features
+Interactive Learning: Engage actively in forming plural nouns with instant feedback.
+Score Tracking: Monitor your progress with real-time scoring.
+User-Friendly Interface: Designed for beginners with a simple and intuitive layout.
+Motivation
+This app aims to make learning English more engaging and accessible for students. Through interactive exercises, learners can build confidence and foster a deeper interest in the English language.
+
+Note: The app link https://kwon24.streamlit.app/ has been verified and is currently active.
+
