@@ -75,3 +75,23 @@ if st.button("Check Answer"):
 if st.button("Show Report"):
     st.subheader("Final Report")
     st.write(f"**{st.session_state['user_name']} Your Total Score:** {st.session_state['score']} correct out of {st.session_state['trials']} attempts.")
+    
+# 계속하기 및 끝내기
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("If you want to continue, Click here!"):
+                    # 다음 명사 준비
+                    st.session_state.user_s = ""
+                    st.session_state.user_es = ""
+                    st.session_state.current_ies = ""
+                    st.experimental_rerun()
+
+            with col2:
+                if st.button("If you want to end this app, Click here!"):
+                    st.session_state.final_stage = True
+                    st.experimental_rerun()
+
+# 게임 종료 후 메시지
+if st.session_state.final_stage:
+    st.markdown("### THE END")
+    st.markdown(random.choice(final_encouragement).format(name=st.session_state.name))
