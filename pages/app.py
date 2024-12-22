@@ -19,7 +19,6 @@ if "restart" not in st.session_state:
     st.session_state["restart"] = False
 
 if st.session_state["restart"]:
-    # 모든 상태 초기화
     st.session_state.clear()
     st.session_state["restart"] = False
 
@@ -40,7 +39,7 @@ if "feedback" not in st.session_state:
 if "user_name" not in st.session_state:
     st.session_state["user_name"] = ""
 if "user_input" not in st.session_state:
-    st.session_state["user_input"] = ""  # Step 2의 입력란 초기화
+    st.session_state["user_input"] = ""  # Step 2 입력란 초기화
 if "finished" not in st.session_state:
     st.session_state["finished"] = False
 
@@ -69,7 +68,7 @@ available_nouns = [noun for noun in st.session_state["shuffled_nouns"] if noun n
 
 selected_noun = st.selectbox(
     "Choose a noun to start:",
-    [""] + available_nouns,  # 빈 옵션 추가
+    [""] + available_nouns,
     index=0,
 )
 
@@ -78,6 +77,7 @@ if selected_noun:
     if st.session_state["current_noun"] != selected_noun:
         st.session_state["current_noun"] = selected_noun
         st.session_state["user_input"] = ""  # 입력란 초기화
+        st.experimental_rerun()  # UI 강제 갱신
     st.write(f"### Singular Noun: **{selected_noun}**")
 
 # Step 2: 복수형 입력
@@ -88,13 +88,16 @@ user_input = st.text_input(
     key="user_input_key",
 )
 
+if user_input:
+    st.session_state["user_input"] = user_input
+
 # Step 3: 정답 확인
 if st.button("Check Answer") and st.session_state["current_noun"]:
     correct_plural = pluralize(st.session_state["current_noun"])
 
     if st.session_state["current_noun"] not in st.session_state["answered_nouns"]:
         st.session_state["trials"] += 1
-        st.session_state["answered_nouns"].add(st.session_state["current_noun"])  # 답변된 명사 추가
+        st.session_state["answered_nouns"].add(st.session_state["current_noun"])
 
         if user_input.strip().lower() == correct_plural.lower():
             st.session_state["score"] += 1
@@ -112,15 +115,15 @@ if st.button("Check Answer") and st.session_state["current_noun"]:
 col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
-        st.session_state["user_input"] = ""  # Step 2 입력란 초기화
+        st.session_state["user_input"] = ""
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to finish!)"):
-        st.session_state["finished"] = True  # 종료 상태로 설정
+        st.session_state["finished"] = True
 
 with col3:
     if st.button("다시 시작하려면 여기를 클릭하세요! (Click here to restart!)"):
-        st.session_state["restart"] = True  # 재시작 트리거 설정
+        st.session_state["restart"] = True
 
 # 최종 피드백
 if st.session_state["finished"]:
