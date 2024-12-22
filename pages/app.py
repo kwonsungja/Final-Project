@@ -70,14 +70,16 @@ selected_noun = st.selectbox(
     "Choose a noun to start:",
     [""] + available_nouns,  # 빈 옵션 추가
     index=0,
+    key="selectbox_key",  # selectbox의 고유 키 추가
 )
 
 if selected_noun:
-    # 새로운 명사를 선택하면 Step 2 입력란 초기화
+    # 새 명사를 선택하면 Step 2 입력란 초기화
     if st.session_state["current_noun"] != selected_noun:
         st.session_state["current_noun"] = selected_noun
         st.session_state["user_input"] = ""  # 입력란 초기화
         st.experimental_rerun()  # 강제로 UI 갱신
+
     st.write(f"### Singular Noun: **{selected_noun}**")
 
 # Step 2: 복수형 입력
@@ -85,7 +87,7 @@ st.subheader("Step 2: Type the Plural Form")
 user_input = st.text_input(
     "Enter the plural form:",
     value=st.session_state["user_input"],  # 항상 현재 상태 값을 사용
-    key="user_input_key",
+    key="text_input_key",  # 고유 키 추가
 )
 
 # Step 3: 정답 확인
@@ -128,12 +130,6 @@ if st.session_state["finished"]:
 
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
-
-
-
-
-
-
 
 
 
