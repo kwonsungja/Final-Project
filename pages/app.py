@@ -86,18 +86,20 @@ if st.button("Check Answer"):
 col1, col2 = st.columns(2)
 with col1:
     if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
-        # Prepare for the next noun
+        # Reset necessary session state variables for the next round
+        st.session_state["current_noun"] = ""
         st.session_state["user_s"] = ""
         st.session_state["user_es"] = ""
         st.session_state["current_ies"] = ""
-        st.experimental_rerun()
+        st.experimental_rerun()  # Safely rerun the app
 
 with col2:
     if st.button("종료하려면 여기를 클릭하세요! (Click here to end!)"):
         st.session_state["final_stage"] = True
-        st.experimental_rerun()
+        st.experimental_rerun()  # Safely rerun the app
 
 # Final Message after Game Ends
-if st.session_state["final_stage"]:
+if "final_stage" in st.session_state and st.session_state["final_stage"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
