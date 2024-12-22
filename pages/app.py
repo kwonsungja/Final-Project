@@ -19,8 +19,8 @@ if "restart" not in st.session_state:
     st.session_state["restart"] = False
 
 if st.session_state["restart"]:
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]  # Clear all session state variables
+    # Explicitly clear all relevant session state variables
+    st.session_state.clear()
     st.session_state["restart"] = False  # Reset restart flag
 
 # Ensure all keys in `st.session_state` are initialized
@@ -38,7 +38,7 @@ if "trials" not in st.session_state:
 if "feedback" not in st.session_state:
     st.session_state["feedback"] = ""
 if "user_name" not in st.session_state:
-    st.session_state["user_name"] = ""
+    st.session_state["user_name"] = ""  # Ensure the user name starts empty
 if "finished" not in st.session_state:
     st.session_state["finished"] = False
 
@@ -55,7 +55,7 @@ st.title("NounSmart: Practice Regular Plural Nouns")
 
 # Step 0: User Name Input
 st.subheader("👤 Enter Your Name")
-user_name = st.text_input("Your Name:", value=st.session_state["user_name"], placeholder="Type your name here")
+user_name = st.text_input("Your Name:", value="", placeholder="Type your name here")
 
 if user_name:
     st.session_state["user_name"] = user_name
@@ -124,6 +124,7 @@ if st.session_state["finished"]:
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
     st.markdown(random.choice(final_encouragement).format(name=st.session_state["user_name"]))
+
 
 
 
