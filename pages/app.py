@@ -14,7 +14,7 @@ def load_data():
 
 df = load_data()
 
-# 초기화 상태 관리
+# 상태 초기화
 if "restart" not in st.session_state:
     st.session_state["restart"] = False
 
@@ -68,28 +68,25 @@ available_nouns = [noun for noun in st.session_state["shuffled_nouns"] if noun n
 
 selected_noun = st.selectbox(
     "Choose a noun to start:",
-    [""] + available_nouns,
+    [""] + available_nouns,  # 빈 옵션 추가
     index=0,
 )
 
 if selected_noun:
-    # 새 명사를 선택하면 Step 2 입력란 초기화
+    # 새로운 명사를 선택하면 Step 2 입력란 초기화
     if st.session_state["current_noun"] != selected_noun:
         st.session_state["current_noun"] = selected_noun
         st.session_state["user_input"] = ""  # 입력란 초기화
-        st.experimental_rerun()  # UI 강제 갱신
+        st.experimental_rerun()  # 강제로 UI 갱신
     st.write(f"### Singular Noun: **{selected_noun}**")
 
 # Step 2: 복수형 입력
 st.subheader("Step 2: Type the Plural Form")
 user_input = st.text_input(
     "Enter the plural form:",
-    value=st.session_state["user_input"],
+    value=st.session_state["user_input"],  # 항상 현재 상태 값을 사용
     key="user_input_key",
 )
-
-if user_input:
-    st.session_state["user_input"] = user_input
 
 # Step 3: 정답 확인
 if st.button("Check Answer") and st.session_state["current_noun"]:
@@ -107,7 +104,6 @@ if st.button("Check Answer") and st.session_state["current_noun"]:
     else:
         st.session_state["feedback"] = "⚠️ You've already answered this noun! Please select another one."
 
-    # 피드백 표시
     st.success(st.session_state["feedback"])
     st.write(f"### {st.session_state['user_name']} Your Score: {st.session_state['score']} / {st.session_state['trials']}")
 
@@ -132,9 +128,6 @@ if st.session_state["finished"]:
 
 if not available_nouns and not st.session_state["restart"]:
     st.markdown("### 끝! (THE END)")
-
-
-
 
 
 
