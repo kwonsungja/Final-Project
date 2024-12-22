@@ -3,7 +3,7 @@ import pandas as pd
 import random
 
 # Load the CSV file
-csv_url = "https://raw.githubusercontent.com/kwonsungja/KSJ24/main/regular_Nouns_real.csv"
+csv_url = "https://github.com/kwonsungja/Final-Project/blob/main/regular_Nouns_real.csv"
 
 @st.cache_data
 def load_data():
