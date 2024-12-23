@@ -112,15 +112,15 @@ if st.button("Check Answer") and st.session_state["current_noun"]:
 # 계속하기, 종료 및 재시작 버튼
 col1, col2, col3 = st.columns(3)
 with col1:
-    if st.button("계속하려면 여기를 클릭하세요! (Click here to continue!)"):
+    if st.button("Click here to continue!"):
         st.session_state["user_input"] = ""  # Step 2 입력란 초기화
 
 with col2:
-    if st.button("종료하려면 여기를 클릭하세요! (Click here to finish!)"):
+    if st.button("Click here to finish!"):
         st.session_state["finished"] = True
 
 with col3:
-    if st.button("다시 시작하려면 여기를 클릭하세요! (Click here to restart!)"):
+    if st.button("Click here to restart!"):
         st.session_state["restart"] = True
 
 # 최종 피드백
